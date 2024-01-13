@@ -1,17 +1,6 @@
 # Learning-GitHub-Actions
 Welcome to the "Learning-GitHub-Actions" project! This repository is designed for beginners to understand and practice GitHub Actions, utilizing a sample workflow inspired by the OWASP PyGoat intentionally vulnerable web project.
 
-
-## Project Structure
-```
-.
-├── GitHub-Action-Concepts.md
-├── pygoat
-│   ├── [ ... Project files ... ]
-└── README.md
-```
-
-
 ## Workflow Overview
 
 The GitHub Actions workflow defined in `.github/workflows/main.yml` consists of two jobs:
