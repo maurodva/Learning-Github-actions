@@ -75,7 +75,7 @@ Let's break down the `sast_scan` job into individual steps:
 ```
 - **Explanation:** This step uses the `actions/setup-python` action to set up Python version 3.8. It ensures that the correct Python version is available for the Bandit tool.
 
-### Step 3: Install Bandit
+#### Step 3: Install Bandit
 ```yaml
 - name: Install Bandit
   run: pip install bandit
