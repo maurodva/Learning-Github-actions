@@ -9,6 +9,16 @@ The GitHub Actions workflow defined in `.github/workflows/main.yml` consists of 
 
 2. **image_scan:** This job builds a Docker image using the provided Dockerfile and performs security scans using Docker Scout. The scan results are saved as an artifact.
 
+## GitHub Actions shown in this workflow
+- [checkout](https://github.com/actions/checkout)
+- [setup-python](https://github.com/actions/setup-python)
+- [Bandit](https://github.com/marketplace/actions/bandit-action)
+- [upload-artifact](https://github.com/actions/upload-artifact)
+- [setup-docker](https://github.com/docker-practice/actions-setup-docker)
+- [docker-scout-action](https://github.com/docker/scout-action)
+
+
+
 ## Getting Started
 
 1. **Clone the Repository:**
