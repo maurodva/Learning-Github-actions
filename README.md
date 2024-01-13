@@ -3,12 +3,14 @@ Welcome to the "Learning-GitHub-Actions" project! This repository is designed fo
 
 
 ## Project Structure
-
+```
 .
 ├── GitHub-Action-Concepts.md
 ├── pygoat
 │   ├── [ ... Project files ... ]
 └── README.md
+```
+
 
 ## Workflow Overview
 
@@ -33,4 +35,4 @@ The GitHub Actions workflow defined in `.github/workflows/main.yml` consists of 
    - View Bandit scan results in the bandit-findings artifact.
    - Check Docker Scout scan findings in the docker-scout-findings artifact.
 
- 
+
