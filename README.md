@@ -11,17 +11,214 @@ The GitHub Actions workflow defined in `.github/workflows/main.yml` consists of 
 
 ## Getting Started
 
-1. Clone the Repository:
+1. **Clone the Repository:**
    ```bash
     git clone https://github.com/your-username/Learning-GitHub-Actions.git
     cd Learning-GitHub-Actions
    ```
 
-2. Run GitHub Actions Workflow:
+2. **Run GitHub Actions Workflow:**
    - Manually trigger the workflow by navigating to the "Actions" tab on GitHub and selecting "Run workflow" for the desired workflow.
 
-3. Explore Results:
+3. **Explore Results:**
    - View Bandit scan results in the bandit-findings artifact.
    - Check Docker Scout scan findings in the docker-scout-findings artifact.
+
+## Deep Dive into GitHub Actions Workflow
+Let's break down the YAML code by each job level, then explain each steps inside it:
+
+### Job1: `sast_scan`
+
+```yaml
+sast_scan:
+  name: Run Bandit Scan
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Bandit
+      run: pip install bandit
+
+    - name: Run Bandit Scan
+      run: bandit -ll -ii -r . -f json -o bandit-report.json
+
+    - name: Upload Bandit Scan Artifact
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-findings
+        path: bandit-report.json
+```
+
+Let's break down the `sast_scan` job into individual steps:
+
+#### Step 1: Checkout code
+```yaml
+- name: Checkout code
+  uses: actions/checkout@v2
+```
+- **Explanation:** This step uses the `actions/checkout` action to fetch the repository code. It ensures that the latest code from the repository is available for the subsequent steps.
+
+#### Step 2: Set up Python
+```yaml
+- name: Set up Python
+  uses: actions/setup-python@v2
+  with:
+    python-version: 3.8
+```
+- **Explanation:** This step uses the `actions/setup-python` action to set up Python version 3.8. It ensures that the correct Python version is available for the Bandit tool.
+
+### Step 3: Install Bandit
+```yaml
+- name: Install Bandit
+  run: pip install bandit
+```
+- **Explanation:** This step installs the Bandit tool using the `pip` package manager. It ensures that Bandit is available for static analysis of Python code.
+
+#### Step 4: Run Bandit Scan
+```yaml
+- name: Run Bandit Scan
+  run: bandit -ll -ii -r . -f json -o bandit-report.json
+```
+- **Explanation:**
+  - `-ll`: Log level set to low, displaying only critical issues.
+  - `-ii`: Confidence level set to high, reporting only high-confidence issues.
+  - `-r .`: Recursive scan of the current directory and its subdirectories.
+  - `-f json`: Output the scan results in JSON format.
+  - `-o bandit-report.json`: Save the scan report to a file named `bandit-report.json`. This command runs the Bandit tool to identify security issues in Python code.
+
+#### Step 5: Upload Bandit Scan Artifact
+```yaml
+- name: Upload Bandit Scan Artifact
+  uses: actions/upload-artifact@v3
+  if: always()
+  with:
+    name: bandit-findings
+    path: bandit-report.json
+```
+- **Explanation:**
+  - `name: Upload Bandit Scan Artifact`: Descriptive name for the step.
+  - `uses: actions/upload-artifact@v3`: Specifies the version of the `upload-artifact` action to use.
+  - `if: always()`: Ensures that the artifact is uploaded even if previous steps fail.
+  - `with` section:
+    - `name: bandit-findings`: Name of the artifact. It will be used to identify the uploaded artifact.
+    - `path: bandit-report.json`: Path to the file or directory to be uploaded. In this case, it's the Bandit scan report (`bandit-report.json`).
+
+This step uses the `upload-artifact` action to upload the Bandit scan report as a build artifact named `bandit-findings`. The artifact can be later accessed and used for analysis or reporting purposes. The `if: always()` ensures that the artifact is uploaded regardless of the success or failure of previous steps.
+
+These five steps together define the `sast_scan` job, providing a comprehensive overview of the Bandit scan workflow.
+
+
+
+### Job2: `image_scan`
+
+```yaml
+image_scan:
+  name: Build Image and Run Image Scan
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker-practice/actions-setup-docker@v1
+      with:
+        docker_version: "20.10.7"
+
+    - name: Build Docker Image
+      run: docker build -f Dockerfile -t myapp:latest .
+
+    - name: Docker Scout Scan
+      uses: docker/scout-action@v1.0.9
+      with:
+        dockerhub-user: ${{ secrets.REPO_USER }}
+        dockerhub-password: ${{ secrets.REPO_PWD }}
+        command: quickview,cves
+        only-severities: critical,high
+        sarif-file: scout-report.sarif
+
+    - name: Upload Docker Scout Scan Artifact
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: docker-scout-findings
+        path: scout-report.sarif
+```
+Let's break down the `image_scan` job into individual steps:
+
+#### Step 1: Checkout code
+```yaml
+- name: Checkout code
+  uses: actions/checkout@v2
+```
+**Explanation:**
+- **Name**: Descriptive name for the step.
+- **Uses**: Utilizes the `actions/checkout` action to fetch the repository code.
+
+#### Step 2: Set up Docker
+```yaml
+- name: Set up Docker
+  uses: docker-practice/actions-setup-docker@v1
+  with:
+    docker_version: "20.10.7"
+```
+**Explanation:**
+- **Name**: Descriptive name for the step.
+- **Uses**: Utilizes the `docker-practice/actions-setup-docker` action to set up Docker with version 20.10.7.
+
+#### Step 3: Build Docker Image
+```yaml
+- name: Build Docker Image
+  run: docker build -f Dockerfile -t myapp:latest .
+```
+**Explanation:**
+- **Name**: Descriptive name for the step.
+- **Run**: Executes a shell command to build a Docker image using the provided Dockerfile and tags it as `myapp:latest`.
+
+#### Step 4: Docker Scout Scan
+```yaml
+- name: Docker Scout Scan
+  uses: docker/scout-action@v1.0.9
+  with:
+    dockerhub-user: ${{ secrets.REPO_USER }}
+    dockerhub-password: ${{ secrets.REPO_PWD }}
+    command: quickview,cves
+    only-severities: critical,high
+    sarif-file: scout-report.sarif
+```
+**Explanation:**
+- **Name**: Descriptive name for the step.
+- **Uses**: Utilizes the `docker/scout-action` action to perform security scans on the Docker image.
+- **With**: Provides configuration options such as Docker Hub credentials, scan command, severity levels, and output SARIF file.
+
+#### Step 5: Upload Docker Scout Scan Artifact
+```yaml
+- name: Upload Docker Scout Scan Artifact
+  uses: actions/upload-artifact@v3
+  if: always()
+  with:
+    name: docker-scout-findings
+    path: scout-report.sarif
+```
+**Explanation:**
+- **Name**: Descriptive name for the step.
+- **Uses**: Utilizes the `actions/upload-artifact` action to upload the Docker Scout scan report as an artifact.
+- **If**: Specifies that this step should always be executed, even if previous steps fail.
+- **With**: Specifies the artifact name (`docker-scout-findings`) and the path of the SARIF file to be uploaded.
+
+These steps collectively define the `image_scan` job, providing a clear sequence of actions to build a Docker image, perform security scans, and upload the findings as an artifact.
+
+## Acknowledgment 
+
+Special thanks to **Nana Janashia** for her valuable guidance and teachings. You can find her on [Techworld with Nana](https://www.youtube.com/c/techworldwithnana).
+
 
 
