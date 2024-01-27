@@ -46,10 +46,10 @@ sast_scan:
 
   steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.8
 
@@ -60,7 +60,7 @@ sast_scan:
       run: bandit -ll -ii -r . -f json -o bandit-report.json
 
     - name: Upload Bandit Scan Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: bandit-findings
@@ -72,14 +72,14 @@ Let's break down the `sast_scan` job into individual steps:
 #### Step 1: Checkout code
 ```yaml
 - name: Checkout code
-  uses: actions/checkout@v2
+  uses: actions/checkout@v3
 ```
 - **Explanation:** This step uses the `actions/checkout` action to fetch the repository code. It ensures that the latest code from the repository is available for the subsequent steps.
 
 #### Step 2: Set up Python
 ```yaml
 - name: Set up Python
-  uses: actions/setup-python@v2
+  uses: actions/setup-python@v3
   with:
     python-version: 3.8
 ```
@@ -107,7 +107,7 @@ Let's break down the `sast_scan` job into individual steps:
 #### Step 5: Upload Bandit Scan Artifact
 ```yaml
 - name: Upload Bandit Scan Artifact
-  uses: actions/upload-artifact@v3
+  uses: actions/upload-artifact@v4
   if: always()
   with:
     name: bandit-findings
@@ -115,7 +115,7 @@ Let's break down the `sast_scan` job into individual steps:
 ```
 - **Explanation:**
   - `name: Upload Bandit Scan Artifact`: Descriptive name for the step.
-  - `uses: actions/upload-artifact@v3`: Specifies the version of the `upload-artifact` action to use.
+  - `uses: actions/upload-artifact@v4`: Specifies the version of the `upload-artifact` action to use.
   - `if: always()`: Ensures that the artifact is uploaded even if previous steps fail.
   - `with` section:
     - `name: bandit-findings`: Name of the artifact. It will be used to identify the uploaded artifact.
@@ -136,7 +136,7 @@ image_scan:
 
   steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Docker
       uses: docker-practice/actions-setup-docker@v1
@@ -144,10 +144,10 @@ image_scan:
         docker_version: "20.10.7"
 
     - name: Build Docker Image
-      run: docker build -f Dockerfile -t myapp:latest .
+      run: docker build -f Dockerfile -t myapp:latest ./Pygoat
 
     - name: Docker Scout Scan
-      uses: docker/scout-action@v1.0.9
+      uses: docker/scout-action@v1.3.0
       with:
         dockerhub-user: ${{ secrets.REPO_USER }}
         dockerhub-password: ${{ secrets.REPO_PWD }}
@@ -156,7 +156,7 @@ image_scan:
         sarif-file: scout-report.sarif
 
     - name: Upload Docker Scout Scan Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: docker-scout-findings
@@ -167,7 +167,7 @@ Let's break down the `image_scan` job into individual steps:
 #### Step 1: Checkout code
 ```yaml
 - name: Checkout code
-  uses: actions/checkout@v2
+  uses: actions/checkout@v3
 ```
 **Explanation:**
 - **Name**: Descriptive name for the step.
@@ -176,7 +176,7 @@ Let's break down the `image_scan` job into individual steps:
 #### Step 2: Set up Docker
 ```yaml
 - name: Set up Docker
-  uses: docker-practice/actions-setup-docker@v1
+  uses: docker-practice/actions-setup-docker@master
   with:
     docker_version: "20.10.7"
 ```
@@ -187,7 +187,7 @@ Let's break down the `image_scan` job into individual steps:
 #### Step 3: Build Docker Image
 ```yaml
 - name: Build Docker Image
-  run: docker build -f Dockerfile -t myapp:latest .
+  run: docker build -f Dockerfile -t myapp:latest ./Pygoat
 ```
 **Explanation:**
 - **Name**: Descriptive name for the step.
@@ -196,7 +196,7 @@ Let's break down the `image_scan` job into individual steps:
 #### Step 4: Docker Scout Scan
 ```yaml
 - name: Docker Scout Scan
-  uses: docker/scout-action@v1.0.9
+  uses: docker/scout-action@v1.3.0
   with:
     dockerhub-user: ${{ secrets.REPO_USER }}
     dockerhub-password: ${{ secrets.REPO_PWD }}
@@ -212,7 +212,7 @@ Let's break down the `image_scan` job into individual steps:
 #### Step 5: Upload Docker Scout Scan Artifact
 ```yaml
 - name: Upload Docker Scout Scan Artifact
-  uses: actions/upload-artifact@v3
+  uses: actions/upload-artifact@v4
   if: always()
   with:
     name: docker-scout-findings
