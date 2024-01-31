@@ -1,3 +1,26 @@
+<!-- TOC -->
+
+- [Learning-GitHub-Actions](#learning-github-actions)
+  - [Workflow Overview](#workflow-overview)
+  - [GitHub Actions shown in this workflow](#github-actions-shown-in-this-workflow)
+  - [Getting Started](#getting-started)
+  - [Deep Dive into GitHub Actions Workflow](#deep-dive-into-github-actions-workflow)
+    - [Job1: `sast_scan`](#job1-sast_scan)
+      - [Step 1: Checkout code](#step-1-checkout-code)
+      - [Step 2: Set up Python](#step-2-set-up-python)
+      - [Step 3: Install Bandit](#step-3-install-bandit)
+      - [Step 4: Run Bandit Scan](#step-4-run-bandit-scan)
+      - [Step 5: Upload Bandit Scan Artifact](#step-5-upload-bandit-scan-artifact)
+    - [Job2: `image_scan`](#job2-image_scan)
+      - [Step 1: Checkout code](#step-1-checkout-code-1)
+      - [Step 2: Set up Docker](#step-2-set-up-docker)
+      - [Step 3: Build Docker Image](#step-3-build-docker-image)
+      - [Step 4: Docker Scout Scan](#step-4-docker-scout-scan)
+      - [Step 5: Upload Docker Scout Scan Artifact](#step-5-upload-docker-scout-scan-artifact)
+  - [Acknowledgment](#acknowledgment)
+
+<!-- /TOC -->
+
 # Learning-GitHub-Actions
 Welcome to the "Learning-GitHub-Actions" project! This repository is designed for beginners to understand and practice GitHub Actions, utilizing a sample workflow inspired by the OWASP PyGoat intentionally vulnerable web project.
 
