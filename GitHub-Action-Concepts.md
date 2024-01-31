@@ -1,3 +1,9 @@
+- [Hello World in GitHub Actions: A Beginner's Guide to Your First Workflow](#hello-world-in-github-actions-a-beginners-guide-to-your-first-workflow)
+  - [What Is a CI/CD Pipeline?](#what-is-a-cicd-pipeline)
+  - [How to Set Up A Github Action CI Workflow](#how-to-set-up-a-github-action-ci-workflow)
+  - [GitHub Actions Workflow Lifecycle](#github-actions-workflow-lifecycle)
+
+
 # Hello World in GitHub Actions: A Beginner's Guide to Your First Workflow
 
 ##  What Is a CI/CD Pipeline?
