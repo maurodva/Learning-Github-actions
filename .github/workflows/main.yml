@@ -53,7 +53,7 @@ jobs:
       - name: Set up Docker
         uses: docker-practice/actions-setup-docker@master
         with:
-          docker_version: "20.10.7"
+          docker_version: latest
 
       # Build the Docker image for the application.
       - name: Build Docker Image
