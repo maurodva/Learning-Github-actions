@@ -15,7 +15,7 @@ jobs:
     steps:
       # Check out the code from the repository.
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Set up Python for the Bandit scan.
       - name: Set up Python
@@ -47,7 +47,7 @@ jobs:
     steps:
       # Check out the code from the repository.
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Set up Docker for building and scanning Docker images.
       - name: Set up Docker
