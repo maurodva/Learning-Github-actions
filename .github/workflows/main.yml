@@ -55,11 +55,22 @@ jobs:
         with:
           docker_version: "26.1.3"
 
-      - name: Create Daemon JSON if missing
+      # Check if the Docker daemon.json file exists.
+      - name: Check if Docker daemon.json exists
+        run: |
+          if [ -f /etc/docker/daemon.json ]; then
+            sudo cat /etc/docker/daemon.json
+          else
+            echo "File /etc/docker/daemon.json does not exist"
+          fi
+
+      # Create the Docker daemon.json file if it does not exist.
+      - name: Create Docker daemon.json if it does not exist
         run: |
           if [ ! -f /etc/docker/daemon.json ]; then
             echo '{}' | sudo tee /etc/docker/daemon.json
           fi
+          sudo cat /etc/docker/daemon.json
   
       # Build the Docker image for the application.
       - name: Build Docker Image
