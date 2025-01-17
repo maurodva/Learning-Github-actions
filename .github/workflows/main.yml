@@ -10,7 +10,7 @@ jobs:
   # Job to perform Bandit scan on the codebase.
   sast_scan:
     name: Run Bandit Scan
-    runs-on: ubuntu-latest
+    runs-on: "24.04"
 
     steps:
       # Check out the code from the repository.
