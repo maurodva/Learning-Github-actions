@@ -29,7 +29,7 @@ jobs:
 
       # Run Bandit scan on the codebase and generate a JSON report.
       - name: Run Bandit Scan
-        run: bandit -ll -ii -r . -f json -o bandit-report.json
+        run: bandit -ll -ii -r ./Pygoat -f json -o bandit-report.json
 
       # Upload the Bandit scan report as an artifact for later analysis.
       - name: Upload Bandit Scan Artifact
